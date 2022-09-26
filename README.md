@@ -10,6 +10,9 @@ This is a simple program to synchronize lights to rekordbox via OSC messages.
 The program scans the memory of the currently running rekordbox.exe and tracks the Master Deck's beat count.
 
 ## How to run this?
+
+Currently only rekordbox 6.5.1 and 6.6.4 are supported. Version 5 support will be implemented in the future! Please update your rekordbox!
+
 1. Make sure you have[ .NET 4.7.2 ](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net472 " .NET 4.7.2 ")installed
 2. Simply download the latest release from [this](https://github.com/palmarci/rbBeatDetect/releases "this") page. 
 3. Extract the contents to a directory.
