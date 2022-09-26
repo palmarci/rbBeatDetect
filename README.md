@@ -18,5 +18,5 @@ The program scans the memory of the currently running rekordbox.exe and tracks t
 6. Run the program, configure your settings.
 7. Check the "Running" box.
 
-I**f you don't have internet access on your computer: **
+** If you don't have internet access on your computer: **
 The program won't be able to update the offsets on startup, so you will have to manually enter the correct values for your rekordbox version.  Make sure you note those values from[ offsets.txt](https://raw.githubusercontent.com/palmarci/rbBeatDetect/main/offsets.txt " offsets.txt") file.  
