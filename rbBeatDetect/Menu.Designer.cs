@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Menu));
             this.errorLabel = new System.Windows.Forms.Label();
             this.titleLabel = new System.Windows.Forms.Label();
             this.beat1 = new System.Windows.Forms.Button();
@@ -474,6 +475,7 @@
             this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.errorLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Menu";
             this.Text = "rbBeatDetect GUI";
             this.Load += new System.EventHandler(this.Form1_Load);
