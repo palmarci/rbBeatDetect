@@ -65,6 +65,8 @@ namespace rbBeatDetect
             deckAdresses[2] = FindDMAAddy(IntPtr.Add(moduleBase, sVersion.deckPointer), new int[] { 0x100, 0x28, 0x0 }) + 0x245c;
             deckAdresses[3] = FindDMAAddy(IntPtr.Add(moduleBase, sVersion.deckPointer), new int[] { 0x108, 0x28, 0x0 }) + 0x245c;
 
+            //todo: rekordbox v5 compatibilty (0xb0, 0x158, +0x1C9C deck offset (???))
+
             oscClient = OscClient;
 
 
