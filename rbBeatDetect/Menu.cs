@@ -28,7 +28,7 @@ namespace rbBeatDetect
         List<VersionManager.OffsetData> supportedVersions = new List<VersionManager.OffsetData>();
         VersionManager.OffsetData selectedVersion = new VersionManager.OffsetData();
         private bool weHaveRunningVersion = false;
-        private string currentProgramVersion = "v2.0";
+      //  private string currentProgramVersion = "v2.0";
         Thread memoryThread = null;
 
         MemoryReader mReader;
@@ -122,7 +122,13 @@ namespace rbBeatDetect
         {
             masterDeckHelper.Visible = false;
             masterDeckLabel.Visible = false;
-            titleLabel.Text += " " + currentProgramVersion;
+
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+            string version = fvi.FileVersion;
+            titleLabel.Text += " v" + version.Replace(".0", "");
+
+
             versionErrorLabel.Text = "";
             errorLabel.Text = "";
 
@@ -132,7 +138,7 @@ namespace rbBeatDetect
 
             if (supportedVersions == null)
             {
-                versionErrorLabel.Text = "Failed getting offsets! Check your internet connection (?)";
+                versionErrorLabel.Text = "Failed downloading offsets!\r\nCheck your internet connection?";
                 autoSelectVersion.Enabled = false;
                 supportedVersionsHelper.Enabled = false;
                 versionBox.Enabled = false;
@@ -150,16 +156,9 @@ namespace rbBeatDetect
 
             }
 
-            //   supportedVersions.Add(new versionManager.OffsetData("6.5.1", 0x03ff44a8, 0x04006EB0, new List<int>() { 0x200, 0x19C }));
-            //   supportedVersions.Add(new versionManager.OffsetData("6.6.4", 0x03f72180, 0x03F85360, new List<int>() { 0x30, 0x19C }));
-
-
 
             versionBox.SelectedIndex = 0;
             runningVersionLabel.Text = "...";
-     //       masterDeckLabel.Text = "???";
-
-
 
             runningCheckTimer.Start();
             rbCheckTimer.Start();
@@ -447,6 +446,8 @@ namespace rbBeatDetect
                 oscHumanDelay.Value = 500;
             }
         }
+
+   
     }
 
 }

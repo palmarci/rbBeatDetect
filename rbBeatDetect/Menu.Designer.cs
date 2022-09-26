@@ -379,9 +379,9 @@
             // versionErrorLabel
             // 
             this.versionErrorLabel.ForeColor = System.Drawing.Color.Red;
-            this.versionErrorLabel.Location = new System.Drawing.Point(11, 198);
+            this.versionErrorLabel.Location = new System.Drawing.Point(11, 184);
             this.versionErrorLabel.Name = "versionErrorLabel";
-            this.versionErrorLabel.Size = new System.Drawing.Size(234, 16);
+            this.versionErrorLabel.Size = new System.Drawing.Size(234, 30);
             this.versionErrorLabel.TabIndex = 30;
             this.versionErrorLabel.Text = "[placeholder]";
             this.versionErrorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;

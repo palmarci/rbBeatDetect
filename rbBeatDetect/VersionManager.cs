@@ -50,6 +50,9 @@ namespace rbBeatDetect
         }
         public List<OffsetData> getOnlineOffsets()
         {
+            var dataFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\rbBeatDetect";
+            var dataFilePath = dataFolderPath + @"\offsets.bak";
+
             try
             {
                 var resp = "";
@@ -63,10 +66,20 @@ namespace rbBeatDetect
                     resp = reader.ReadToEnd();
                 }
 
-
                 Console.WriteLine("github data: " + resp);
 
 
+                Directory.CreateDirectory(dataFolderPath);
+
+                if (!File.Exists(dataFilePath))
+                {
+                    File.Create(dataFilePath).Dispose();
+                }
+
+                using (StreamWriter sW = new StreamWriter(dataFilePath, false))
+                {
+                    sW.Write(resp);
+                }
 
 
                 return parseTextToOffsetDatas(resp);
@@ -74,7 +87,19 @@ namespace rbBeatDetect
             }
             catch (Exception e)
             {
-                Console.WriteLine("error downloading offsets: " + e);
+                Console.WriteLine($"error downloading offsets: {e}, trying to read from backup");
+
+                try
+                {
+                    string backupOffsets = File.ReadAllText(dataFilePath);
+                    return parseTextToOffsetDatas(backupOffsets);
+
+                }
+                catch (Exception e2)
+                {
+                    Console.WriteLine($"Failed reading backup file: {e2}");
+                }
+
                 return null;
             }
 
