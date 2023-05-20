@@ -24,3 +24,6 @@ Currently only rekordbox 6.5.1 and 6.6.4 are supported. Version 5 support will b
 **If you don't have internet access on your computer:** 
 
 The program won't be able to update the offsets on startup, so it will use the last cached version. I recommend running this for the first time with internet connection. You can also manually enter the correct values for your rekordbox version. Make sure you note those values from the [ offsets.txt](https://raw.githubusercontent.com/palmarci/rbBeatDetect/main/offsets.txt " offsets.txt") file.  
+
+## How can i find the offsets?
+[Guide](https://github.com/palmarci/rbBeatDetect/blob/main/RekordboxMemoryScanning.pdf)
