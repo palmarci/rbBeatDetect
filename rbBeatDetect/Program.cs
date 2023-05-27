@@ -12,6 +12,8 @@ using System.Windows.Forms;
 
 namespace rbBeatDetect
 {
+
+
     static class Program
     {
 
@@ -21,7 +23,7 @@ namespace rbBeatDetect
 
         static void Main()
         {
-
+            FileManager.initialize();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Menu());

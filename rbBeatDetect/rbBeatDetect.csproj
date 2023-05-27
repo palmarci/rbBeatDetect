@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileManager.cs" />
     <Compile Include="Menu.cs">
       <SubType>Form</SubType>
     </Compile>

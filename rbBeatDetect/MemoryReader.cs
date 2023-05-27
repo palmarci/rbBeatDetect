@@ -44,7 +44,7 @@ namespace rbBeatDetect
         {
             Process process = Process.GetProcessesByName("rekordbox")[0];
             currentHandle = OpenProcess(PROCESS_WM_READ, false, process.Id);
-            Console.WriteLine("current handle = " + currentHandle);
+            FileManager.log("current handle = " + currentHandle);
             isCrashed = false;
 
             foreach (ProcessModule m in process.Modules)
@@ -52,7 +52,7 @@ namespace rbBeatDetect
                 if (m.ModuleName == "rekordbox.exe")
                 {
                     moduleBase = m.BaseAddress;
-                    Console.WriteLine("modulebase = 0x" + moduleBase.ToString("X"));
+                    FileManager.log("modulebase = 0x" + moduleBase.ToString("X"));
                     break;
                 }
             }
@@ -102,7 +102,7 @@ namespace rbBeatDetect
             {
                 if (errorCount > maxErrors)
                 {
-                    Console.WriteLine("too many errors, self crashing...");
+                    FileManager.log("too many errors, self crashing...");
                     isCrashed = true;
                     return;
                 }

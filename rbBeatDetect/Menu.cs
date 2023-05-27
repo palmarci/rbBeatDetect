@@ -72,7 +72,7 @@ namespace rbBeatDetect
             }
             catch (Exception e)
             {
-                Console.WriteLine("preventing crash while auto selecting version: " + e.ToString());
+                FileManager.log("preventing crash while auto selecting version: " + e.ToString());
             }
 
         }
@@ -132,14 +132,15 @@ namespace rbBeatDetect
             versionErrorLabel.Text = "";
             errorLabel.Text = "";
 
-            supportedVersions = vManager.getOnlineOffsets();
+            supportedVersions = vManager.getOffsets();
             versionBox.Items.Add("Manual config");
 
 
             if (supportedVersions == null)
             {
-                versionErrorLabel.Text = "Failed downloading offsets!\r\nCheck your internet connection?";
+                versionErrorLabel.Text = "Failed obtaining offsets!\r\nPlease check your internet connection!\r\n";
                 autoSelectVersion.Enabled = false;
+                autoSelectVersion.Checked = false;
                 supportedVersionsHelper.Enabled = false;
                 versionBox.Enabled = false;
                 deckPointerHelper.Enabled = true;
@@ -226,7 +227,7 @@ namespace rbBeatDetect
             IPAddress parsedIp;
             if (!IPAddress.TryParse(oscIpAddr.Text, out parsedIp))
             {
-                Console.WriteLine("Failed parsing ip");
+               FileManager.log("Failed parsing ip");
                 errorLabel.Text = "Failed parsing the IP address.";
                 return null;
             }
@@ -242,7 +243,7 @@ namespace rbBeatDetect
             int port;
             if (!int.TryParse(oscPortBox.Text, out port))
             {
-                Console.WriteLine("port parsing failed");
+                FileManager.log("port parsing failed");
                 errorLabel.Text = "Failed parsint the port.";
                 return null;
             }
@@ -316,7 +317,7 @@ namespace rbBeatDetect
                 {
                     if (!weHaveRunningVersion)
                     {
-                        Console.WriteLine("checking for rb.exe...");
+                        FileManager.log("checking for rb.exe...");
 
                         var path = pname.First().MainModule.FileName;
                         var result = vManager.getRunningVersion(path);
@@ -367,11 +368,11 @@ namespace rbBeatDetect
             try
             {
                 var str = "0.0.0;" + deckPointerBox.Text + ";" + masterPointerBox.Text + ";" + masterOffsetsBox.Text;
-                var parsed = vManager.parseTextToOffsetDatas(str);
+                var parsed = vManager.parseOffsetData(str);
 
                 if (parsed.Count > 0)
                 {
-                    Console.WriteLine("parsed manual input");
+                    FileManager.log("parsed manual input");
                     selectedVersion = parsed[0];
 
                 }
@@ -382,7 +383,7 @@ namespace rbBeatDetect
             }
             catch (Exception e)
             {
-                Console.WriteLine("failed parsing: " + e);
+                FileManager.log("failed parsing: " + e);
                 selectedVersion = null;
 
             }

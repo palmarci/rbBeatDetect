@@ -13,7 +13,7 @@ namespace rbBeatDetect
     {
         private string onlineUpdateUrl = "https://raw.githubusercontent.com/palmarci/rbBeatDetect/main/offsets.txt";
 
-        public List<OffsetData> parseTextToOffsetDatas(string text)
+        public List<OffsetData> parseOffsetData(string text)
         {
             List<OffsetData> toReturn = new List<OffsetData>();
 
@@ -26,7 +26,7 @@ namespace rbBeatDetect
 
                 if (tags.Length != 4)
                 {
-                    Console.WriteLine("offset length mismatch");
+                    FileManager.log("skipping line '" + line + "'");
                 }
                 else
                 {
@@ -48,10 +48,8 @@ namespace rbBeatDetect
             }
             return toReturn;
         }
-        public List<OffsetData> getOnlineOffsets()
+        public List<OffsetData> getOffsets()
         {
-            var dataFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\rbBeatDetect";
-            var dataFilePath = dataFolderPath + @"\offsets.bak";
 
             try
             {
@@ -66,38 +64,25 @@ namespace rbBeatDetect
                     resp = reader.ReadToEnd();
                 }
 
-                Console.WriteLine("github data: " + resp);
+                FileManager.log("got online data, writing it to backup: {" + resp + "}");
 
+                FileManager.writeBackupOffsets(resp);
 
-                Directory.CreateDirectory(dataFolderPath);
-
-                if (!File.Exists(dataFilePath))
-                {
-                    File.Create(dataFilePath).Dispose();
-                }
-
-                using (StreamWriter sW = new StreamWriter(dataFilePath, false))
-                {
-                    sW.Write(resp);
-                }
-
-
-                return parseTextToOffsetDatas(resp);
+                return parseOffsetData(resp);
 
             }
             catch (Exception e)
             {
-                Console.WriteLine($"error downloading offsets: {e}, trying to read from backup");
+                FileManager.log($"error downloading offsets: {e}, trying to read from backup");
 
                 try
                 {
-                    string backupOffsets = File.ReadAllText(dataFilePath);
-                    return parseTextToOffsetDatas(backupOffsets);
+                    return parseOffsetData(FileManager.readBackupOffsets());
 
                 }
                 catch (Exception e2)
                 {
-                    Console.WriteLine($"Failed reading backup file: {e2}");
+                    FileManager.log($"failed reading backup file: {e2}");
                 }
 
                 return null;
@@ -105,7 +90,7 @@ namespace rbBeatDetect
 
         }
 
-        /* public UpdateVersion getOnlineVersion()
+        /* public UpdateVersion getRekordboxVersion()
          {
              try
              {
@@ -188,7 +173,7 @@ namespace rbBeatDetect
         public UpdateVersion getRunningVersion(string path)
         {
 
-            Console.WriteLine("got running path: " + path);
+            FileManager.log("got running path: " + path);
 
             FileVersionInfo fileInfo = FileVersionInfo.GetVersionInfo(path);
             var version = fileInfo.FileVersion.Split('.');
@@ -233,7 +218,14 @@ namespace rbBeatDetect
                 return mainVer + "." + subVer + "." + patchVer;
             }
 
-
+            public override int GetHashCode() //automatically generated
+            {
+                int hashCode = -467722179;
+                hashCode = hashCode * -1521134295 + mainVer.GetHashCode();
+                hashCode = hashCode * -1521134295 + subVer.GetHashCode();
+                hashCode = hashCode * -1521134295 + patchVer.GetHashCode();
+                return hashCode;
+            }
         }
         public class OffsetData
         {
