@@ -23,10 +23,16 @@ namespace rbBeatDetect
 
         static void Main()
         {
-            FileManager.initialize();
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Menu());
+            try
+            {
+                FileManager.initialize();
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new Menu());
+            } catch (Exception e) { //this is a bit sketchy lol
+                FileManager.log(e.ToString());
+                throw;
+            }
         }
     }
 }

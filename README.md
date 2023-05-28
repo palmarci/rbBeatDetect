@@ -1,4 +1,3 @@
-
 # rbBeatDetect
 
 ![image](https://user-images.githubusercontent.com/20556689/191962038-82b22267-42ae-45bb-b41a-4f2af5236a12.png)
@@ -11,7 +10,7 @@ The program scans the memory of the currently running rekordbox.exe and tracks t
 
 ## How to run this?
 
-Currently only rekordbox 6.5.1 and 6.6.4 are supported. Version 5 support will be implemented in the future! Please update your rekordbox!
+Order is important! Currently only rekordbox 6.5.1 and 6.6.4 are supported.
 
 1. Make sure you have[ .NET 4.7.2 ](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net472 " .NET 4.7.2 ")installed
 2. Simply download the latest release from [this](https://github.com/palmarci/rbBeatDetect/releases "this") page. 

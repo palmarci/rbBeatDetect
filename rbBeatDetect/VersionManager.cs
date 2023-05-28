@@ -73,7 +73,7 @@ namespace rbBeatDetect
             }
             catch (Exception e)
             {
-                FileManager.log($"error downloading offsets: {e}, trying to read from backup");
+                FileManager.log($"error downloading offsets: {e.ToString()}, \r\ntrying to read from backup");
 
                 try
                 {
@@ -82,7 +82,7 @@ namespace rbBeatDetect
                 }
                 catch (Exception e2)
                 {
-                    FileManager.log($"failed reading backup file: {e2}");
+                    FileManager.log($"failed reading backup file: {e2.ToString()}");
                 }
 
                 return null;
