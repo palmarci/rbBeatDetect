@@ -21,12 +21,13 @@ Order is important! Currently only rekordbox 6.5.1 and 6.6.4 are supported.
 7. Check the "Running" box.
 
 
-Note: some OSC clients (like QLC+) neads an ON and an OFF switch to register a keypress. This is exactly what the "Mimic human keypress" switch does. You can specify a delay (in ms) between those messages. I use something like 10.
+Note: some OSC clients (like QLC+) needs an ON and an OFF signal to register a keypress. This is exactly what the "Mimic human keypress" switch does. You can specify a delay (in ms) between those messages.
 
 
 **If you don't have internet access on your computer:** 
 
-The program won't be able to update the offsets on startup, so it will use the last cached version. I recommend running this for the first time with an internet connection. You can also manually enter the correct values for your rekordbox version. Make sure you note those values from the [ offsets.txt](https://raw.githubusercontent.com/palmarci/rbBeatDetect/main/offsets.txt " offsets.txt") file.  
+The program won't be able to update the offsets on startup, so it will use the last cached version. I recommend trying this out for the first time with an internet connection. 
 
 ## How can i find the offsets?
 [Guide](https://github.com/palmarci/rbBeatDetect/blob/main/RekordboxMemoryScanning.pdf)
+(https://raw.githubusercontent.com/palmarci/rbBeatDetect/main/offsets.json) 
