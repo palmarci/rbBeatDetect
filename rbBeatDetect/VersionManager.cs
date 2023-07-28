@@ -59,7 +59,8 @@ namespace rbBeatDetect
                 }
                 else
                 {
-                    FileManager.log("got ok json data, writing it to backup: {" + resp + "}");
+                    var minified = Regex.Replace(resp, "(\"(?:[^\"\\\\]|\\\\.)*\")|\\s+", "$1"); //lol
+                    FileManager.log("got ok json data, writing it to backup: {" + minified + "}");
                     FileManager.writeBackupOffsets(resp);
                     return resp;
 

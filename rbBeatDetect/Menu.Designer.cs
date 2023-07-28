@@ -186,6 +186,11 @@
             this.oscHumanDelay.Name = "oscHumanDelay";
             this.oscHumanDelay.Size = new System.Drawing.Size(58, 20);
             this.oscHumanDelay.TabIndex = 29;
+            this.oscHumanDelay.Value = new decimal(new int[] {
+            25,
+            0,
+            0,
+            0});
             this.oscHumanDelay.ValueChanged += new System.EventHandler(this.oscHumanDelay_ValueChanged);
             // 
             // oscDelayHelper
@@ -356,6 +361,7 @@
             // 
             // updateGuiTimer
             // 
+            this.updateGuiTimer.Interval = 50;
             this.updateGuiTimer.Tick += new System.EventHandler(this.updateGuiTimer_Tick);
             // 
             // selfSponsor

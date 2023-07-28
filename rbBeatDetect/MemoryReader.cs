@@ -14,6 +14,9 @@ namespace rbBeatDetect
     public class MemoryReader
     {
 
+        private int maxErrors = 25;
+
+
         private readonly int PROCESS_WM_READ = 0x10;
 
         private IntPtr currentHandle = IntPtr.Zero;
@@ -21,17 +24,10 @@ namespace rbBeatDetect
 
         public Int64 masterAddress = 0;
         public List<Int64> deckAdresses = new List<Int64> { 0, 0, 0, 0 };
-
-        private int maxErrors = 25;
-
         public int masterDeck = 0;
         public int currentBeatNr = 0;
-
         public bool isCrashed = false;
-
         private OscClient osc;
-
-
         private int errorCount = 0;
 
         [DllImport("kernel32.dll")]
@@ -57,12 +53,14 @@ namespace rbBeatDetect
                 }
             }
 
-
             masterAddress = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.masterPointer), offsetData.masterOffsets.ToArray());
-                    deckAdresses[0] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), offsetData.deckOffsets[0].ToArray()) + offsetData.endOffset;
+            deckAdresses[0] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), offsetData.deckOffsets[0].ToArray()) + offsetData.endOffset;
             deckAdresses[1] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), offsetData.deckOffsets[1].ToArray()) + offsetData.endOffset;
             deckAdresses[2] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), offsetData.deckOffsets[2].ToArray()) + offsetData.endOffset;
             deckAdresses[3] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), offsetData.deckOffsets[3].ToArray()) + offsetData.endOffset;
+            FileManager.log("master address: " + masterAddress.ToString());
+            FileManager.log("deck addresses: " + deckAdresses.ToString());
+
 
             //todo: rekordbox v5 compatibilty (0xb0, 0x158, +0x1C9C deck offset (???))
 
@@ -72,7 +70,7 @@ namespace rbBeatDetect
 
         private Int64 FindDMAAddy(IntPtr ptr, int[] offsets)
         {
-          
+
             var buffer = new byte[IntPtr.Size];
 
             foreach (int i in offsets)
@@ -111,6 +109,8 @@ namespace rbBeatDetect
                 if (masterDeck < 1 || masterDeck > 4)
                 {
                     errorCount += 1;
+                    FileManager.log("read error! masterdeck is out of valid range");
+
                 }
                 else
                 {
@@ -118,24 +118,22 @@ namespace rbBeatDetect
 
                 }
 
-
                 if (currentBeatNr > 4 || currentBeatNr < 1)
                 {
                     errorCount += 1;
+                    FileManager.log("read error! beat number is out of valid range");
+
                 }
 
                 if (lastBeat != currentBeatNr)
                 {
                     lastBeat = currentBeatNr;
-                    new Thread(() =>
-                    {
+                    new Thread(() => {
                         Thread.CurrentThread.IsBackground = true;
                         osc.sendMsg();
                     }).Start();
 
                 }
-
-
 
                 Thread.Sleep(1);
             }
