@@ -1,6 +1,6 @@
 # rbBeatDetect
 
-![image](https://user-images.githubusercontent.com/20556689/191962038-82b22267-42ae-45bb-b41a-4f2af5236a12.png)
+![image](https://github.com/palmarci/rbBeatDetect/assets/20556689/9a423138-2347-4d83-8c1d-770344c1b812)
 
 ## What is this?
 This is a simple program to synchronize lights to rekordbox via OSC messages.
@@ -30,4 +30,5 @@ The program won't be able to update the offsets on startup, so it will use the l
 
 ## How can i find the offsets?
 [Guide](https://github.com/palmarci/rbBeatDetect/blob/main/RekordboxMemoryScanning.pdf)
-(https://raw.githubusercontent.com/palmarci/rbBeatDetect/main/offsets.json) 
+[Offsets.json](https://raw.githubusercontent.com/palmarci/rbBeatDetect/main/offsets.json)
+(DO NOT use the offsets.txt file, its for the older versions only!)
