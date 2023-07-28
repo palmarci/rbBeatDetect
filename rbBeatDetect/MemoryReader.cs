@@ -59,20 +59,14 @@ namespace rbBeatDetect
 
 
             masterAddress = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.masterPointer), offsetData.masterOffsets.ToArray());
-
-            
-            deckAdresses[0] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), new int[] { 0xf0, 0x28, 0x0 }) + 0x245c;
-            deckAdresses[1] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), new int[] { 0xf0, 0x28, 0x0, 0x245c });
-
-            //    deckAdresses[1] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), new int[] { 0xf8, 0x28, 0x0 }) + 0x245c;
-            //    deckAdresses[2] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), new int[] { 0x100, 0x28, 0x0 }) + 0x245c;
-            //    deckAdresses[3] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), new int[] { 0x108, 0x28, 0x0 }) + 0x245c;
-
+                    deckAdresses[0] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), offsetData.deckOffsets[0].ToArray()) + offsetData.endOffset;
+            deckAdresses[1] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), offsetData.deckOffsets[1].ToArray()) + offsetData.endOffset;
+            deckAdresses[2] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), offsetData.deckOffsets[2].ToArray()) + offsetData.endOffset;
+            deckAdresses[3] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), offsetData.deckOffsets[3].ToArray()) + offsetData.endOffset;
 
             //todo: rekordbox v5 compatibilty (0xb0, 0x158, +0x1C9C deck offset (???))
 
             this.osc = oscClient;
-
 
         }
 

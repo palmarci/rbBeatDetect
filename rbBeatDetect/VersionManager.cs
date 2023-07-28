@@ -18,11 +18,8 @@ namespace rbBeatDetect
         private string onlineOffsetPath = "https://raw.githubusercontent.com/palmarci/rbBeatDetect/main/offsets.json";
 
         public List<OffsetData> parseOffsets(string text) {
-
-
-
-
-            return null;
+            List<OffsetData> data = JsonConvert.DeserializeObject<List<OffsetData>>(text);
+            return data;
         }
 
         public static bool IsValidJson(string jsonString)
@@ -38,7 +35,7 @@ namespace rbBeatDetect
             }
         }
 
-        //tries to download from github repo, if it fails, then reads from backup file
+        //tries to download from github repo, if it fails: reads from backup file
         public string getOffsetText()
         {
 
@@ -59,15 +56,14 @@ namespace rbBeatDetect
                 if (!IsValidJson(resp))
                 {
                     throw new Exception("Invalid JSON from github repo");
-                } else
+                }
+                else
                 {
                     FileManager.log("got ok json data, writing it to backup: {" + resp + "}");
                     FileManager.writeBackupOffsets(resp);
                     return resp;
 
-
                 }
-                //    return parseOffsetData(resp);
 
             }
             catch (Exception e)
@@ -88,7 +84,7 @@ namespace rbBeatDetect
             }
 
         }
-        public AppVersion getLatestOnlineVersion()
+        public AppVersion getLatestOnlineVersion() //not used currently, but interesting
          {
              try
              {
@@ -108,13 +104,12 @@ namespace rbBeatDetect
                  reqStream.Write(byteArray, 0, byteArray.Length);
 
                  var response = request.GetResponse();
-                 //     addDebugText(((System.Net.HttpWebResponse)response).StatusDescription);
 
-                 var respStream = response.GetResponseStream();
+                var respStream = response.GetResponseStream();
 
                  var reader = new StreamReader(respStream);
                  string data = reader.ReadToEnd();
-                 Console.WriteLine("got data from rekordbox.com: " + data);
+                 FileManager.log("got data from rekordbox.com: " + data);
 
                  if (data.Contains("STATUS=0"))
                  {
@@ -125,19 +120,17 @@ namespace rbBeatDetect
                      if (finalVersion.Length == 5)
                      {
                          return new AppVersion(finalVersion);
-                     //    var asd = UpdateVersion(finalVersion);
 
                      }
                      else
                      {
-                         Console.WriteLine("latest version length mismatch");
-                         //          return (false, );
+                         FileManager.log("latest version length mismatch");
                      }
 
                  }
                  else
                  {
-                     Console.WriteLine("server responded with an error");
+                    FileManager.log("server responded with an error");
 
                  }
 
@@ -177,6 +170,10 @@ namespace rbBeatDetect
         }
         public class AppVersion
         {
+            public AppVersion()
+            {
+
+            }
 
             public AppVersion(int m, int s, int p)
             {

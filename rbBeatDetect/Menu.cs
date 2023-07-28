@@ -25,58 +25,14 @@ namespace rbBeatDetect
             InitializeComponent();
         }
 
-        VersionManager vManager = new VersionManager();
+        VersionManager versionManager = new VersionManager();
         List<VersionManager.OffsetData> supportedOffsets = new List<VersionManager.OffsetData>();
-        private bool weHaveRunningVersion = false;
-      
+        VersionManager.AppVersion runningVersion = null;
+
         Thread memoryThread = null;
-        MemoryReader mReader;
+        MemoryReader memoryReader = null;
 
-
-        private static string intToHex(int num)
-        {
-            string hex = num.ToString("X");
-
-            return "0x" + hex;
-        }
-
-        private void fillVersionBoxes(VersionManager.OffsetData oData)
-        {
-           // selectedVersion = oData;
-            deckPointerBox.Text = intToHex(oData.deckPointer);
-            masterPointerBox.Text = intToHex(oData.masterPointer);
-            var offsetString = "";
-            foreach (var offset in oData.masterOffsets)
-            {
-                offsetString += intToHex(offset) + ", ";
-            }
-            offsetString = offsetString.TrimEnd(',', ' ');
-            masterOffsetsBox.Text = offsetString;
-        }
-
-    /*    private void updateAutoSelect()
-        {
-            try
-            {
-                var currentVer = new VersionManager.AppVersion(runningVersionLabel.Text);
-                for (int i = 0; i < supportedVersions.Count(); i++)
-                {
-                    if (currentVer.Equals(supportedVersions[i].version))
-                    {
-                        versionBox.SelectedIndex = i + 1;
-
-                    }
-                }
-
-            }
-            catch (Exception e)
-            {
-                FileManager.log("preventing crash while auto selecting version: " + e.ToString());
-            }
-
-        }
-
-        */
+      
         private void setBeatColor(int beatNumber)
         {
             if (beatNumber == 1)
@@ -128,46 +84,34 @@ namespace rbBeatDetect
             string version = fvi.FileVersion;
             titleLabel.Text += " v" + version.Replace(".0", "");
 
-
-            versionErrorLabel.Text = "";
             errorLabel.Text = "";
 
-            string onlineData = vManager.getOffsetText();
-            supportedOffsets = vManager.parseOffsets(onlineData);
-      //      versionBox.Items.Add("Manual config");
-
+            string offsetText = versionManager.getOffsetText();
+            supportedOffsets = versionManager.parseOffsets(offsetText);
 
             if (supportedOffsets == null)
             {
-                versionErrorLabel.Text = "Failed obtaining offsets or reading from local backup!\r\nPlease check your internet connection!\r\n";
-         //       autoSelectVersion.Enabled = false;
-         //       autoSelectVersion.Checked = false;
+                errorLabel.Text = "Failed downloading the offsets and could not read the local backup!\r\nPlease check your internet connection!\r\n";
                 supportedVersionsHelper.Enabled = false;
-                versionBox.Enabled = false;
-                deckPointerHelper.Enabled = true;
-                masterPointerHelper.Enabled = true;
-                masterOffsetsHelper.Enabled = true;
 
             }
             else
             {
                 foreach (var ver in supportedOffsets)
                 {
-                    versionBox.Items.Add(ver);
+
+                    versionsBox.Items.Add(ver.version.ToString());
+
                 }
 
             }
 
-
-        //    versionBox.SelectedIndex = 0;
             runningVersionLabel.Text = "...";
+            runningCheckbox.Enabled = false;
 
-            runningCheckTimer.Start();
-            rbCheckTimer.Start();
+            rbVersionCheckTimer.Start();
 
         }
-
-   
 
         private void turnOffMemoryReader()
         {
@@ -175,7 +119,7 @@ namespace rbBeatDetect
             masterDeckLabel.Text = "???";
             updateGuiTimer.Stop();
             memoryThread?.Abort();
-            mReader = null;
+            memoryReader = null;
             runningCheckbox.Checked = false;
             masterDeckHelper.Visible = false;
             masterDeckLabel.Visible = false;
@@ -183,13 +127,12 @@ namespace rbBeatDetect
 
         }
 
-        
-        private OscClient validateOsc()
+        private OscClient setupOscClient()
         {
             IPAddress parsedIp;
             if (!IPAddress.TryParse(oscIpAddr.Text, out parsedIp))
             {
-               FileManager.log("Failed parsing ip");
+                FileManager.log("Failed parsing ip");
                 errorLabel.Text = "Failed parsing the IP address.";
                 return null;
             }
@@ -206,15 +149,13 @@ namespace rbBeatDetect
             if (!int.TryParse(oscPortBox.Text, out port))
             {
                 FileManager.log("port parsing failed");
-                errorLabel.Text = "Failed parsint the port.";
+                errorLabel.Text = "Failed parsing the port number.";
                 return null;
             }
-
 
             return new OscClient(parsedIp, port, Path, oscMimicHuman.Checked, Convert.ToInt32(oscHumanDelay.Value), Convert.ToInt32(oscDelay.Value));
 
         }
-
 
         private void runningCheckbox_CheckedChanged(object sender, EventArgs e)
         {
@@ -224,49 +165,43 @@ namespace rbBeatDetect
 
                 errorLabel.Text = "";
 
-                var oscClient = validateOsc();
+                var oscClient = setupOscClient();
 
                 if (oscClient == null)
                 {
-              //      errorLabel.Text = "Failed while parsing";
                     turnOffMemoryReader();
                     return;
                 }
 
                 oscGroup.Enabled = false;
 
-             //   mReader = new MemoryReader(selectedVersion, oscClient);
-       
+                foreach (var data in supportedOffsets)
+                {
+                    if (data.version.Equals(runningVersion))
+                    {
+                        memoryReader = new MemoryReader(data, oscClient);
+                    }
+                }
 
-                memoryThread = new Thread(mReader.run);
+                if (memoryReader == null)
+                {
+                    errorLabel.Text = "The current version is not (yet) supported!";
+                    turnOffMemoryReader();
+                    return;
+                }
+
+                memoryThread = new Thread(memoryReader.run);
                 memoryThread.IsBackground = true;
                 memoryThread.Start();
-
 
                 updateGuiTimer.Start();
                 masterDeckLabel.Visible = true;
                 masterDeckHelper.Visible = true;
 
-
-
             }
             else
             {
                 turnOffMemoryReader();
-            }
-
-        }
-
-        private void runningCheckTimer_Tick(object sender, EventArgs e)
-        {
-            if (!weHaveRunningVersion)
-            {
-                runningCheckbox.Checked = false;
-                runningCheckbox.Enabled = false;
-            }
-            else
-            {
-                runningCheckbox.Enabled = true;
             }
 
         }
@@ -277,30 +212,34 @@ namespace rbBeatDetect
                 Process[] pname = Process.GetProcessesByName("rekordbox");
                 if (pname.Length != 0)
                 {
-                    if (!weHaveRunningVersion)
+                    if (runningVersion == null)
                     {
                         FileManager.log("checking for rb.exe...");
 
-                        var path = pname.First().MainModule.FileName;
-                        var result = vManager.getRunningVersion(path);
-
-                        if (result == null)
+                        try
                         {
-                            runningCheckbox.Checked = false;
-                            runningCheckbox.Enabled = false;
-                            runningVersionLabel.Text = "FAIL";
+                            var path = pname.First().MainModule.FileName;
+                            var result = versionManager.getRunningVersion(path);
+                            if (result == null)
+                            {
+                                runningCheckbox.Checked = false;
+                                runningCheckbox.Enabled = false;
+                                runningVersionLabel.Text = "FAIL";
 
+                            }
+                            else
+                            {
+                                runningCheckbox.Enabled = true;
+                                runningVersionLabel.Text = result.ToString();
+                                runningVersionLabel.ForeColor = Color.Green;
+
+                                runningVersion = result;
+
+                            }
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            runningCheckbox.Enabled = true;
-                            runningVersionLabel.Text = result.ToString();
-                            runningVersionLabel.ForeColor = Color.Green;
-
-                            weHaveRunningVersion = true;
-
-             
-
+                            FileManager.log("exception while getting rekordbox.exe version: " + ex.Message);
                         }
 
                     }
@@ -311,23 +250,20 @@ namespace rbBeatDetect
                     runningCheckbox.Enabled = false;
                     runningVersionLabel.ForeColor = Color.Red;
                     runningVersionLabel.Text = "rekordbox is not running...";
-                    weHaveRunningVersion = false;
+                    runningVersion = null;
                 }
 
             }
         }
 
-   
-
-
         private void updateGuiTimer_Tick(object sender, EventArgs e)
         {
-            masterDeckLabel.Text = $"{mReader.masterDeck}";
-            setBeatColor(mReader.currentBeatNr);
+            masterDeckLabel.Text = $"{memoryReader.masterDeck}";
+            setBeatColor(memoryReader.currentBeatNr);
 
-            if (mReader.isCrashed)
+            if (memoryReader.isCrashed)
             {
-                errorLabel.Text = "Memory reader crashed!\r\nDid you set the master deck?\r\nAre the decks initialized?";
+                errorLabel.Text = "Memory reader crashed!\r\nDid you set the Master Deck?\r\nDid you load a track to EVERY deck?";
                 turnOffMemoryReader();
             }
         }
@@ -338,7 +274,8 @@ namespace rbBeatDetect
             {
                 oscHumanDelay.Enabled = true;
 
-            } else
+            }
+            else
             {
                 oscHumanDelay.Enabled = false;
             }
@@ -365,7 +302,6 @@ namespace rbBeatDetect
             }
         }
 
-       
     }
 
 }

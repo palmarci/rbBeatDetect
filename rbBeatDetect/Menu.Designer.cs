@@ -53,19 +53,11 @@
             this.stats = new System.Windows.Forms.GroupBox();
             this.runningCheckbox = new System.Windows.Forms.CheckBox();
             this.verBox = new System.Windows.Forms.GroupBox();
-            this.masterOffsetsHelper = new System.Windows.Forms.Label();
-            this.masterPointerHelper = new System.Windows.Forms.Label();
-            this.deckPointerHelper = new System.Windows.Forms.Label();
-            this.masterOffsetsBox = new System.Windows.Forms.TextBox();
-            this.masterPointerBox = new System.Windows.Forms.TextBox();
-            this.deckPointerBox = new System.Windows.Forms.TextBox();
-            this.versionErrorLabel = new System.Windows.Forms.Label();
+            this.versionsBox = new System.Windows.Forms.ListBox();
             this.supportedVersionsHelper = new System.Windows.Forms.Label();
             this.runningVersionLabel = new System.Windows.Forms.Label();
             this.runningVersionHelper = new System.Windows.Forms.Label();
-            this.versionBox = new System.Windows.Forms.ComboBox();
-            this.runningCheckTimer = new System.Windows.Forms.Timer(this.components);
-            this.rbCheckTimer = new System.Windows.Forms.Timer(this.components);
+            this.rbVersionCheckTimer = new System.Windows.Forms.Timer(this.components);
             this.updateGuiTimer = new System.Windows.Forms.Timer(this.components);
             this.selfSponsor = new System.Windows.Forms.LinkLabel();
             this.oscGroup.SuspendLayout();
@@ -201,9 +193,9 @@
             this.oscDelayHelper.AutoSize = true;
             this.oscDelayHelper.Location = new System.Drawing.Point(6, 104);
             this.oscDelayHelper.Name = "oscDelayHelper";
-            this.oscDelayHelper.Size = new System.Drawing.Size(62, 13);
+            this.oscDelayHelper.Size = new System.Drawing.Size(79, 13);
             this.oscDelayHelper.TabIndex = 28;
-            this.oscDelayHelper.Text = "OSC Delay:";
+            this.oscDelayHelper.Text = "OSC Pre-delay:";
             // 
             // oscDelay
             // 
@@ -310,17 +302,10 @@
             // 
             // verBox
             // 
-            this.verBox.Controls.Add(this.masterOffsetsHelper);
-            this.verBox.Controls.Add(this.masterPointerHelper);
-            this.verBox.Controls.Add(this.deckPointerHelper);
-            this.verBox.Controls.Add(this.masterOffsetsBox);
-            this.verBox.Controls.Add(this.masterPointerBox);
-            this.verBox.Controls.Add(this.deckPointerBox);
-            this.verBox.Controls.Add(this.versionErrorLabel);
+            this.verBox.Controls.Add(this.versionsBox);
             this.verBox.Controls.Add(this.supportedVersionsHelper);
             this.verBox.Controls.Add(this.runningVersionLabel);
             this.verBox.Controls.Add(this.runningVersionHelper);
-            this.verBox.Controls.Add(this.versionBox);
             this.verBox.Location = new System.Drawing.Point(12, 55);
             this.verBox.Name = "verBox";
             this.verBox.Size = new System.Drawing.Size(266, 226);
@@ -328,75 +313,14 @@
             this.verBox.TabStop = false;
             this.verBox.Text = "Version Settings";
             // 
-            // masterOffsetsHelper
+            // versionsBox
             // 
-            this.masterOffsetsHelper.AutoSize = true;
-            this.masterOffsetsHelper.Enabled = false;
-            this.masterOffsetsHelper.Location = new System.Drawing.Point(16, 134);
-            this.masterOffsetsHelper.Name = "masterOffsetsHelper";
-            this.masterOffsetsHelper.Size = new System.Drawing.Size(78, 13);
-            this.masterOffsetsHelper.TabIndex = 36;
-            this.masterOffsetsHelper.Text = "Master Offsets:";
-            // 
-            // masterPointerHelper
-            // 
-            this.masterPointerHelper.AutoSize = true;
-            this.masterPointerHelper.Enabled = false;
-            this.masterPointerHelper.Location = new System.Drawing.Point(16, 108);
-            this.masterPointerHelper.Name = "masterPointerHelper";
-            this.masterPointerHelper.Size = new System.Drawing.Size(78, 13);
-            this.masterPointerHelper.TabIndex = 35;
-            this.masterPointerHelper.Text = "Master Pointer:";
-            // 
-            // deckPointerHelper
-            // 
-            this.deckPointerHelper.AutoSize = true;
-            this.deckPointerHelper.Enabled = false;
-            this.deckPointerHelper.Location = new System.Drawing.Point(16, 82);
-            this.deckPointerHelper.Name = "deckPointerHelper";
-            this.deckPointerHelper.Size = new System.Drawing.Size(72, 13);
-            this.deckPointerHelper.TabIndex = 34;
-            this.deckPointerHelper.Text = "Deck Pointer:";
-            // 
-            // masterOffsetsBox
-            // 
-            this.masterOffsetsBox.Enabled = false;
-            this.masterOffsetsBox.Location = new System.Drawing.Point(124, 134);
-            this.masterOffsetsBox.Name = "masterOffsetsBox";
-            this.masterOffsetsBox.ReadOnly = true;
-            this.masterOffsetsBox.Size = new System.Drawing.Size(100, 20);
-            this.masterOffsetsBox.TabIndex = 33;
-         //   this.masterOffsetsBox.TextChanged += new System.EventHandler(this.masterOffsetsBox_TextChanged);
-            // 
-            // masterPointerBox
-            // 
-            this.masterPointerBox.Enabled = false;
-            this.masterPointerBox.Location = new System.Drawing.Point(124, 108);
-            this.masterPointerBox.Name = "masterPointerBox";
-            this.masterPointerBox.ReadOnly = true;
-            this.masterPointerBox.Size = new System.Drawing.Size(100, 20);
-            this.masterPointerBox.TabIndex = 32;
-        //    this.masterPointerBox.TextChanged += new System.EventHandler(this.masterPointerBox_TextChanged);
-            // 
-            // deckPointerBox
-            // 
-            this.deckPointerBox.Enabled = false;
-            this.deckPointerBox.Location = new System.Drawing.Point(124, 79);
-            this.deckPointerBox.Name = "deckPointerBox";
-            this.deckPointerBox.ReadOnly = true;
-            this.deckPointerBox.Size = new System.Drawing.Size(100, 20);
-            this.deckPointerBox.TabIndex = 31;
-      //      this.deckPointerBox.TextChanged += new System.EventHandler(this.deckPointerBox_TextChanged);
-            // 
-            // versionErrorLabel
-            // 
-            this.versionErrorLabel.ForeColor = System.Drawing.Color.Red;
-            this.versionErrorLabel.Location = new System.Drawing.Point(11, 184);
-            this.versionErrorLabel.Name = "versionErrorLabel";
-            this.versionErrorLabel.Size = new System.Drawing.Size(234, 30);
-            this.versionErrorLabel.TabIndex = 30;
-            this.versionErrorLabel.Text = "[placeholder]";
-            this.versionErrorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.versionsBox.Enabled = false;
+            this.versionsBox.FormattingEnabled = true;
+            this.versionsBox.Location = new System.Drawing.Point(125, 54);
+            this.versionsBox.Name = "versionsBox";
+            this.versionsBox.Size = new System.Drawing.Size(120, 121);
+            this.versionsBox.TabIndex = 31;
             // 
             // supportedVersionsHelper
             // 
@@ -406,7 +330,6 @@
             this.supportedVersionsHelper.Size = new System.Drawing.Size(102, 13);
             this.supportedVersionsHelper.TabIndex = 29;
             this.supportedVersionsHelper.Text = "Supported Versions:";
-       //     this.supportedVersionsHelper.Click += new System.EventHandler(this.supportedVersionsHelper_Click);
             // 
             // runningVersionLabel
             // 
@@ -426,27 +349,10 @@
             this.runningVersionHelper.TabIndex = 27;
             this.runningVersionHelper.Text = "Running version:";
             // 
-            // versionBox
+            // rbVersionCheckTimer
             // 
-            this.versionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.versionBox.Enabled = false;
-            this.versionBox.FormattingEnabled = true;
-            this.versionBox.Location = new System.Drawing.Point(124, 50);
-            this.versionBox.Name = "versionBox";
-            this.versionBox.Size = new System.Drawing.Size(121, 21);
-            this.versionBox.TabIndex = 23;
-        //    this.versionBox.SelectedIndexChanged += new System.EventHandler(this.versionBox_SelectedIndexChanged);
-            // 
-            // runningCheckTimer
-            // 
-            this.runningCheckTimer.Enabled = true;
-            this.runningCheckTimer.Interval = 500;
-            this.runningCheckTimer.Tick += new System.EventHandler(this.runningCheckTimer_Tick);
-            // 
-            // rbCheckTimer
-            // 
-            this.rbCheckTimer.Interval = 1000;
-            this.rbCheckTimer.Tick += new System.EventHandler(this.rbCheckTimer_Tick);
+            this.rbVersionCheckTimer.Interval = 1000;
+            this.rbVersionCheckTimer.Tick += new System.EventHandler(this.rbCheckTimer_Tick);
             // 
             // updateGuiTimer
             // 
@@ -514,16 +420,7 @@
         private System.Windows.Forms.Label supportedVersionsHelper;
         private System.Windows.Forms.Label runningVersionLabel;
         private System.Windows.Forms.Label runningVersionHelper;
-        private System.Windows.Forms.ComboBox versionBox;
-        private System.Windows.Forms.Label versionErrorLabel;
-        private System.Windows.Forms.TextBox masterOffsetsBox;
-        private System.Windows.Forms.TextBox masterPointerBox;
-        private System.Windows.Forms.TextBox deckPointerBox;
-        private System.Windows.Forms.Label masterOffsetsHelper;
-        private System.Windows.Forms.Label masterPointerHelper;
-        private System.Windows.Forms.Label deckPointerHelper;
-        private System.Windows.Forms.Timer runningCheckTimer;
-        private System.Windows.Forms.Timer rbCheckTimer;
+        private System.Windows.Forms.Timer rbVersionCheckTimer;
         private System.Windows.Forms.Timer updateGuiTimer;
         private System.Windows.Forms.NumericUpDown oscDelay;
         private System.Windows.Forms.CheckBox oscMimicHuman;
@@ -531,6 +428,7 @@
         private System.Windows.Forms.NumericUpDown oscHumanDelay;
         private System.Windows.Forms.LinkLabel selfSponsor;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListBox versionsBox;
     }
 }
 

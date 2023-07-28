@@ -34,6 +34,7 @@ namespace rbBeatDetect
 
         public static void log(String msg)
         {
+            Console.WriteLine(msg);
             StringBuilder sb = new StringBuilder();
             sb.Append(msg + "\r\n");
             File.AppendAllText(logFilePath, sb.ToString());

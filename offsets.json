@@ -33,7 +33,7 @@
       512,
       412
     ],
-    "endOffset": 581
+    "endOffset": 9308
   },
   {
     "version": {
@@ -69,6 +69,42 @@
       48,
       412
     ],
-    "endOffset": 581
+    "endOffset": 9308
+  }, {
+    "version": {
+      "mainVer": 6,
+      "subVer": 7,
+      "patchVer": 3
+    },
+    "deckPointer": 70477616,
+    "deckOffsets": [
+      [
+        240,
+        40,
+        24
+      ],
+      [
+        248,
+        40,
+        24
+      ],
+      [
+        256,
+        40,
+        24
+      ],
+      [
+        264,
+        40,
+        24
+      ]
+    ],
+    "masterPointer": 70147424,
+    "masterOffsets": [
+      232,
+      2840,
+	  3560
+    ],
+    "endOffset": 9308
   }
 ]
