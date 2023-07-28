@@ -1,0 +1,74 @@
+[
+  {
+    "version": {
+      "mainVer": 6,
+      "subVer": 5,
+      "patchVer": 1
+    },
+    "deckPointer": 67060904,
+    "deckOffsets": [
+      [
+        240,
+        40,
+        0
+      ],
+      [
+        248,
+        40,
+        0
+      ],
+      [
+        256,
+        40,
+        0
+      ],
+      [
+        264,
+        40,
+        0
+      ]
+    ],
+    "masterPointer": 67137200,
+    "masterOffsets": [
+      512,
+      412
+    ],
+    "endOffset": 581
+  },
+  {
+    "version": {
+      "mainVer": 6,
+      "subVer": 6,
+      "patchVer": 4
+    },
+    "deckPointer": 66527616,
+    "deckOffsets": [
+      [
+        240,
+        40,
+        0
+      ],
+      [
+        248,
+        40,
+        0
+      ],
+      [
+        256,
+        40,
+        0
+      ],
+      [
+        264,
+        40,
+        0
+      ]
+    ],
+    "masterPointer": 66605920,
+    "masterOffsets": [
+      48,
+      412
+    ],
+    "endOffset": 581
+  }
+]

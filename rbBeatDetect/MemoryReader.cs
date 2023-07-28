@@ -29,7 +29,7 @@ namespace rbBeatDetect
 
         public bool isCrashed = false;
 
-        private OscClient oscClient;
+        private OscClient osc;
 
 
         private int errorCount = 0;
@@ -40,7 +40,7 @@ namespace rbBeatDetect
         [DllImport("kernel32.dll")]
         private static extern bool ReadProcessMemory(int hProcess, Int64 lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
 
-        public MemoryReader(OffsetData sVersion, OscClient OscClient)
+        public MemoryReader(OffsetData offsetData, OscClient oscClient)
         {
             Process process = Process.GetProcessesByName("rekordbox")[0];
             currentHandle = OpenProcess(PROCESS_WM_READ, false, process.Id);
@@ -58,22 +58,27 @@ namespace rbBeatDetect
             }
 
 
-            masterAddress = FindDMAAddy(IntPtr.Add(moduleBase, sVersion.masterPointer), sVersion.masterOffsets.ToArray());
+            masterAddress = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.masterPointer), offsetData.masterOffsets.ToArray());
 
-            deckAdresses[0] = FindDMAAddy(IntPtr.Add(moduleBase, sVersion.deckPointer), new int[] { 0xf0, 0x28, 0x0 }) + 0x245c;
-            deckAdresses[1] = FindDMAAddy(IntPtr.Add(moduleBase, sVersion.deckPointer), new int[] { 0xf8, 0x28, 0x0 }) + 0x245c;
-            deckAdresses[2] = FindDMAAddy(IntPtr.Add(moduleBase, sVersion.deckPointer), new int[] { 0x100, 0x28, 0x0 }) + 0x245c;
-            deckAdresses[3] = FindDMAAddy(IntPtr.Add(moduleBase, sVersion.deckPointer), new int[] { 0x108, 0x28, 0x0 }) + 0x245c;
+            
+            deckAdresses[0] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), new int[] { 0xf0, 0x28, 0x0 }) + 0x245c;
+            deckAdresses[1] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), new int[] { 0xf0, 0x28, 0x0, 0x245c });
+
+            //    deckAdresses[1] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), new int[] { 0xf8, 0x28, 0x0 }) + 0x245c;
+            //    deckAdresses[2] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), new int[] { 0x100, 0x28, 0x0 }) + 0x245c;
+            //    deckAdresses[3] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), new int[] { 0x108, 0x28, 0x0 }) + 0x245c;
+
 
             //todo: rekordbox v5 compatibilty (0xb0, 0x158, +0x1C9C deck offset (???))
 
-            oscClient = OscClient;
+            this.osc = oscClient;
 
 
         }
 
         private Int64 FindDMAAddy(IntPtr ptr, int[] offsets)
         {
+          
             var buffer = new byte[IntPtr.Size];
 
             foreach (int i in offsets)
@@ -131,7 +136,7 @@ namespace rbBeatDetect
                     new Thread(() =>
                     {
                         Thread.CurrentThread.IsBackground = true;
-                        oscClient.sendMsg();
+                        osc.sendMsg();
                     }).Start();
 
                 }

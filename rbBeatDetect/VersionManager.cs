@@ -5,56 +5,47 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 
 namespace rbBeatDetect
 {
     public class VersionManager
     {
-        private string onlineUpdateUrl = "https://raw.githubusercontent.com/palmarci/rbBeatDetect/main/offsets.txt";
+        private string onlineOffsetPath = "https://raw.githubusercontent.com/palmarci/rbBeatDetect/main/offsets.json";
 
-        public List<OffsetData> parseOffsetData(string text)
-        {
-            List<OffsetData> toReturn = new List<OffsetData>();
+        public List<OffsetData> parseOffsets(string text) {
 
-            var lines = text.Split('\n');
 
-            foreach (var line in lines)
-            {
-                var tags = line.Split(';');
-                var data = new OffsetData();
 
-                if (tags.Length != 4)
-                {
-                    FileManager.log("skipping line '" + line + "'");
-                }
-                else
-                {
-                    data.update = new UpdateVersion(tags[0]);
-                    data.deckPointer = Convert.ToInt32(tags[1], 16);
-                    data.masterPointer = Convert.ToInt32(tags[2], 16);
 
-                    var offsets = tags[3].Split(',');
-
-                    data.masterOffsets = new List<int>() { };
-
-                    foreach (var offset in offsets)
-                    {
-                        data.masterOffsets.Add(Convert.ToInt32(offset, 16));
-                    }
-                    toReturn.Add(data);
-
-                }
-            }
-            return toReturn;
+            return null;
         }
-        public List<OffsetData> getOffsets()
+
+        public static bool IsValidJson(string jsonString)
+        {
+            try
+            {
+                JToken.Parse(jsonString);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        //tries to download from github repo, if it fails, then reads from backup file
+        public string getOffsetText()
         {
 
             try
             {
                 var resp = "";
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(onlineUpdateUrl);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(onlineOffsetPath);
                 request.AutomaticDecompression = DecompressionMethods.GZip;
 
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
@@ -64,11 +55,19 @@ namespace rbBeatDetect
                     resp = reader.ReadToEnd();
                 }
 
-                FileManager.log("got online data, writing it to backup: {" + resp + "}");
+  
+                if (!IsValidJson(resp))
+                {
+                    throw new Exception("Invalid JSON from github repo");
+                } else
+                {
+                    FileManager.log("got ok json data, writing it to backup: {" + resp + "}");
+                    FileManager.writeBackupOffsets(resp);
+                    return resp;
 
-                FileManager.writeBackupOffsets(resp);
 
-                return parseOffsetData(resp);
+                }
+                //    return parseOffsetData(resp);
 
             }
             catch (Exception e)
@@ -77,7 +76,7 @@ namespace rbBeatDetect
 
                 try
                 {
-                    return parseOffsetData(FileManager.readBackupOffsets());
+                    return FileManager.readBackupOffsets();
 
                 }
                 catch (Exception e2)
@@ -89,8 +88,7 @@ namespace rbBeatDetect
             }
 
         }
-
-        /* public UpdateVersion getRekordboxVersion()
+        public AppVersion getLatestOnlineVersion()
          {
              try
              {
@@ -116,7 +114,7 @@ namespace rbBeatDetect
 
                  var reader = new StreamReader(respStream);
                  string data = reader.ReadToEnd();
-                 Console.WriteLine("got data from pioneer: " + data);
+                 Console.WriteLine("got data from rekordbox.com: " + data);
 
                  if (data.Contains("STATUS=0"))
                  {
@@ -126,7 +124,7 @@ namespace rbBeatDetect
 
                      if (finalVersion.Length == 5)
                      {
-                         return new UpdateVersion(finalVersion);
+                         return new AppVersion(finalVersion);
                      //    var asd = UpdateVersion(finalVersion);
 
                      }
@@ -150,10 +148,6 @@ namespace rbBeatDetect
                  return null;
              }
          }
-
-
-         */
-
         private int extractNumbers(String InputString)
         {
             String Result = "";
@@ -169,8 +163,7 @@ namespace rbBeatDetect
             }
             return Convert.ToInt32(Result);
         }
-
-        public UpdateVersion getRunningVersion(string path)
+        public AppVersion getRunningVersion(string path)
         {
 
             FileManager.log("got running path: " + path);
@@ -178,22 +171,21 @@ namespace rbBeatDetect
             FileVersionInfo fileInfo = FileVersionInfo.GetVersionInfo(path);
             var version = fileInfo.FileVersion.Split('.');
 
-            return new UpdateVersion(extractNumbers(version[0]), extractNumbers(version[1]), extractNumbers(version[2]));
+            return new AppVersion(extractNumbers(version[0]), extractNumbers(version[1]), extractNumbers(version[2]));
 
 
         }
-
-        public class UpdateVersion
+        public class AppVersion
         {
 
-            public UpdateVersion(int m, int s, int p)
+            public AppVersion(int m, int s, int p)
             {
                 mainVer = m;
                 subVer = s;
                 patchVer = p;
             }
 
-            public UpdateVersion(string str)
+            public AppVersion(string str)
             {
                 var splits = str.Split('.');
                 mainVer = Convert.ToInt32(splits[0]);
@@ -207,7 +199,7 @@ namespace rbBeatDetect
 
             public override bool Equals(object obj)
             {
-                return obj is UpdateVersion version &&
+                return obj is AppVersion version &&
                   mainVer == version.mainVer &&
                   subVer == version.subVer &&
                   patchVer == version.patchVer;
@@ -218,46 +210,42 @@ namespace rbBeatDetect
                 return mainVer + "." + subVer + "." + patchVer;
             }
 
-            public override int GetHashCode() //automatically generated
-            {
-                int hashCode = -467722179;
-                hashCode = hashCode * -1521134295 + mainVer.GetHashCode();
-                hashCode = hashCode * -1521134295 + subVer.GetHashCode();
-                hashCode = hashCode * -1521134295 + patchVer.GetHashCode();
-                return hashCode;
-            }
         }
         public class OffsetData
         {
-            public UpdateVersion update;
+            public AppVersion version;
             public int deckPointer;
+            public int[][] deckOffsets;
             public int masterPointer;
-            public List<int> masterOffsets;
+            public int[] masterOffsets;
+            public int endOffset;
 
             public OffsetData()
             {
 
             }
 
-            public OffsetData(string supportedVersion, int dP, int mP, List<int> mOfs)
+            public OffsetData(string version, int deckPointer, int[][] deckOffsets, int masterPointer, int[] masterOffsets, int endOffset)
             {
-                update = new UpdateVersion(supportedVersion);
-                dP = deckPointer;
-                mP = masterPointer;
-                mOfs = masterOffsets;
+                this.version = new AppVersion(version);
+                this.deckPointer = deckPointer;
+                this.deckOffsets = deckOffsets;
+                this.masterPointer = masterPointer;
+                this.masterOffsets = masterOffsets;
+                this.endOffset = endOffset;
             }
 
-            public override bool Equals(object obj)
-            {
-                return obj is OffsetData data &&
-                  deckPointer == data.deckPointer &&
-                  masterPointer == data.masterPointer &&
-                  EqualityComparer<List<int>>.Default.Equals(masterOffsets, data.masterOffsets);
-            }
+      
 
             public override string ToString()
             {
-                return "v" + update.ToString();
+                string str =  "v" + version.ToString() + ", deck pointer: " + this.deckPointer + ", master pointer:" + this.masterPointer + ", master offsets: (";
+                foreach (int i in masterOffsets)
+                {
+                    str += i + ", ";
+                }
+                str += "), endOffset: " + this.endOffset;
+                return str;
             }
         }
 

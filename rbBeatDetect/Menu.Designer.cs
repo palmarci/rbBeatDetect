@@ -39,6 +39,7 @@
             this.masterDeckHelper = new System.Windows.Forms.Label();
             this.masterDeckLabel = new System.Windows.Forms.Label();
             this.oscGroup = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.oscHumanDelay = new System.Windows.Forms.NumericUpDown();
             this.oscDelayHelper = new System.Windows.Forms.Label();
             this.oscDelay = new System.Windows.Forms.NumericUpDown();
@@ -62,7 +63,6 @@
             this.supportedVersionsHelper = new System.Windows.Forms.Label();
             this.runningVersionLabel = new System.Windows.Forms.Label();
             this.runningVersionHelper = new System.Windows.Forms.Label();
-            this.autoSelectVersion = new System.Windows.Forms.CheckBox();
             this.versionBox = new System.Windows.Forms.ComboBox();
             this.runningCheckTimer = new System.Windows.Forms.Timer(this.components);
             this.rbCheckTimer = new System.Windows.Forms.Timer(this.components);
@@ -155,6 +155,7 @@
             // 
             // oscGroup
             // 
+            this.oscGroup.Controls.Add(this.label1);
             this.oscGroup.Controls.Add(this.oscHumanDelay);
             this.oscGroup.Controls.Add(this.oscDelayHelper);
             this.oscGroup.Controls.Add(this.oscDelay);
@@ -172,10 +173,19 @@
             this.oscGroup.TabStop = false;
             this.oscGroup.Text = "OSC Settings";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(63, 164);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(70, 13);
+            this.label1.TabIndex = 20;
+            this.label1.Text = "Delay (in ms):";
+            // 
             // oscHumanDelay
             // 
             this.oscHumanDelay.Enabled = false;
-            this.oscHumanDelay.Location = new System.Drawing.Point(103, 160);
+            this.oscHumanDelay.Location = new System.Drawing.Point(138, 162);
             this.oscHumanDelay.Maximum = new decimal(new int[] {
             500,
             0,
@@ -310,7 +320,6 @@
             this.verBox.Controls.Add(this.supportedVersionsHelper);
             this.verBox.Controls.Add(this.runningVersionLabel);
             this.verBox.Controls.Add(this.runningVersionHelper);
-            this.verBox.Controls.Add(this.autoSelectVersion);
             this.verBox.Controls.Add(this.versionBox);
             this.verBox.Location = new System.Drawing.Point(12, 55);
             this.verBox.Name = "verBox";
@@ -323,7 +332,7 @@
             // 
             this.masterOffsetsHelper.AutoSize = true;
             this.masterOffsetsHelper.Enabled = false;
-            this.masterOffsetsHelper.Location = new System.Drawing.Point(16, 161);
+            this.masterOffsetsHelper.Location = new System.Drawing.Point(16, 134);
             this.masterOffsetsHelper.Name = "masterOffsetsHelper";
             this.masterOffsetsHelper.Size = new System.Drawing.Size(78, 13);
             this.masterOffsetsHelper.TabIndex = 36;
@@ -333,7 +342,7 @@
             // 
             this.masterPointerHelper.AutoSize = true;
             this.masterPointerHelper.Enabled = false;
-            this.masterPointerHelper.Location = new System.Drawing.Point(16, 135);
+            this.masterPointerHelper.Location = new System.Drawing.Point(16, 108);
             this.masterPointerHelper.Name = "masterPointerHelper";
             this.masterPointerHelper.Size = new System.Drawing.Size(78, 13);
             this.masterPointerHelper.TabIndex = 35;
@@ -343,7 +352,7 @@
             // 
             this.deckPointerHelper.AutoSize = true;
             this.deckPointerHelper.Enabled = false;
-            this.deckPointerHelper.Location = new System.Drawing.Point(16, 109);
+            this.deckPointerHelper.Location = new System.Drawing.Point(16, 82);
             this.deckPointerHelper.Name = "deckPointerHelper";
             this.deckPointerHelper.Size = new System.Drawing.Size(72, 13);
             this.deckPointerHelper.TabIndex = 34;
@@ -352,29 +361,32 @@
             // masterOffsetsBox
             // 
             this.masterOffsetsBox.Enabled = false;
-            this.masterOffsetsBox.Location = new System.Drawing.Point(124, 161);
+            this.masterOffsetsBox.Location = new System.Drawing.Point(124, 134);
             this.masterOffsetsBox.Name = "masterOffsetsBox";
+            this.masterOffsetsBox.ReadOnly = true;
             this.masterOffsetsBox.Size = new System.Drawing.Size(100, 20);
             this.masterOffsetsBox.TabIndex = 33;
-            this.masterOffsetsBox.TextChanged += new System.EventHandler(this.masterOffsetsBox_TextChanged);
+         //   this.masterOffsetsBox.TextChanged += new System.EventHandler(this.masterOffsetsBox_TextChanged);
             // 
             // masterPointerBox
             // 
             this.masterPointerBox.Enabled = false;
-            this.masterPointerBox.Location = new System.Drawing.Point(124, 135);
+            this.masterPointerBox.Location = new System.Drawing.Point(124, 108);
             this.masterPointerBox.Name = "masterPointerBox";
+            this.masterPointerBox.ReadOnly = true;
             this.masterPointerBox.Size = new System.Drawing.Size(100, 20);
             this.masterPointerBox.TabIndex = 32;
-            this.masterPointerBox.TextChanged += new System.EventHandler(this.masterPointerBox_TextChanged);
+        //    this.masterPointerBox.TextChanged += new System.EventHandler(this.masterPointerBox_TextChanged);
             // 
             // deckPointerBox
             // 
             this.deckPointerBox.Enabled = false;
-            this.deckPointerBox.Location = new System.Drawing.Point(124, 106);
+            this.deckPointerBox.Location = new System.Drawing.Point(124, 79);
             this.deckPointerBox.Name = "deckPointerBox";
+            this.deckPointerBox.ReadOnly = true;
             this.deckPointerBox.Size = new System.Drawing.Size(100, 20);
             this.deckPointerBox.TabIndex = 31;
-            this.deckPointerBox.TextChanged += new System.EventHandler(this.deckPointerBox_TextChanged);
+      //      this.deckPointerBox.TextChanged += new System.EventHandler(this.deckPointerBox_TextChanged);
             // 
             // versionErrorLabel
             // 
@@ -389,11 +401,12 @@
             // supportedVersionsHelper
             // 
             this.supportedVersionsHelper.AutoSize = true;
-            this.supportedVersionsHelper.Location = new System.Drawing.Point(16, 82);
+            this.supportedVersionsHelper.Location = new System.Drawing.Point(16, 54);
             this.supportedVersionsHelper.Name = "supportedVersionsHelper";
             this.supportedVersionsHelper.Size = new System.Drawing.Size(102, 13);
             this.supportedVersionsHelper.TabIndex = 29;
             this.supportedVersionsHelper.Text = "Supported Versions:";
+       //     this.supportedVersionsHelper.Click += new System.EventHandler(this.supportedVersionsHelper_Click);
             // 
             // runningVersionLabel
             // 
@@ -413,29 +426,16 @@
             this.runningVersionHelper.TabIndex = 27;
             this.runningVersionHelper.Text = "Running version:";
             // 
-            // autoSelectVersion
-            // 
-            this.autoSelectVersion.AutoSize = true;
-            this.autoSelectVersion.Checked = true;
-            this.autoSelectVersion.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.autoSelectVersion.Location = new System.Drawing.Point(124, 55);
-            this.autoSelectVersion.Name = "autoSelectVersion";
-            this.autoSelectVersion.Size = new System.Drawing.Size(119, 17);
-            this.autoSelectVersion.TabIndex = 24;
-            this.autoSelectVersion.Text = "Auto Version Select";
-            this.autoSelectVersion.UseVisualStyleBackColor = true;
-            this.autoSelectVersion.CheckedChanged += new System.EventHandler(this.autoSelectVersion_CheckedChanged);
-            // 
             // versionBox
             // 
             this.versionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.versionBox.Enabled = false;
             this.versionBox.FormattingEnabled = true;
-            this.versionBox.Location = new System.Drawing.Point(124, 79);
+            this.versionBox.Location = new System.Drawing.Point(124, 50);
             this.versionBox.Name = "versionBox";
             this.versionBox.Size = new System.Drawing.Size(121, 21);
             this.versionBox.TabIndex = 23;
-            this.versionBox.SelectedIndexChanged += new System.EventHandler(this.versionBox_SelectedIndexChanged);
+        //    this.versionBox.SelectedIndexChanged += new System.EventHandler(this.versionBox_SelectedIndexChanged);
             // 
             // runningCheckTimer
             // 
@@ -514,7 +514,6 @@
         private System.Windows.Forms.Label supportedVersionsHelper;
         private System.Windows.Forms.Label runningVersionLabel;
         private System.Windows.Forms.Label runningVersionHelper;
-        private System.Windows.Forms.CheckBox autoSelectVersion;
         private System.Windows.Forms.ComboBox versionBox;
         private System.Windows.Forms.Label versionErrorLabel;
         private System.Windows.Forms.TextBox masterOffsetsBox;
@@ -531,6 +530,7 @@
         private System.Windows.Forms.Label oscDelayHelper;
         private System.Windows.Forms.NumericUpDown oscHumanDelay;
         private System.Windows.Forms.LinkLabel selfSponsor;
+        private System.Windows.Forms.Label label1;
     }
 }
 
