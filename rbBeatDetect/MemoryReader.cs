@@ -59,7 +59,7 @@ namespace rbBeatDetect
             deckAdresses[2] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), offsetData.deckOffsets[2].ToArray()) + offsetData.endOffset;
             deckAdresses[3] = FindDMAAddy(IntPtr.Add(moduleBase, offsetData.deckPointer), offsetData.deckOffsets[3].ToArray()) + offsetData.endOffset;
             FileManager.log("master address: " + masterAddress.ToString());
-            FileManager.log("deck addresses: " + deckAdresses.ToString());
+            FileManager.log("0 deck addresses: " + deckAdresses[0]);
 
 
             //todo: rekordbox v5 compatibilty (0xb0, 0x158, +0x1C9C deck offset (???))
@@ -70,7 +70,6 @@ namespace rbBeatDetect
 
         private Int64 FindDMAAddy(IntPtr ptr, int[] offsets)
         {
-
             var buffer = new byte[IntPtr.Size];
 
             foreach (int i in offsets)

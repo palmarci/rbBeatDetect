@@ -242,6 +242,7 @@ namespace rbBeatDetect
                 {
                     str += i + ", ";
                 }
+
                 str += "), endOffset: " + this.endOffset;
                 return str;
             }
