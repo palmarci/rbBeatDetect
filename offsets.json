@@ -101,9 +101,9 @@
     ],
     "masterPointer": 70157680,
     "masterOffsets": [
-      3560,
-      640,
-	  32
+		32,
+		640,
+		3560
     ],
     "endOffset": 9308
   }
