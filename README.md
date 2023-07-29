@@ -12,7 +12,7 @@ The program scans the memory of the currently running rekordbox.exe and tracks t
 
 1. Make sure you have[ .NET 4.7.2 ](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net472 " .NET 4.7.2 ")installed
 2. Simply download the latest release from [this](https://github.com/palmarci/rbBeatDetect/releases "this") page. 
-3. Extract the contents to a directory.
+3. Extract the contents to a directory and run the exe.
 4. Run rekordbox and load a track to **every** deck.
 5. Set the Master to a deck (any).
 6. Run the program, configure your settings.
