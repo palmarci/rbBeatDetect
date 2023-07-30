@@ -19,11 +19,12 @@ This is a simple program to synchronize lights to rekordbox via OSC messages. Th
 ## FAQ
 - **What does the Mimic human keypress button do?**
 
-- Some OSC clients (like QLC+) needs an ON and an OFF signal to register a keypress. This is exactly what this switch does. You can specify a delay (in ms) between those messages.
+Some OSC clients (like QLC+) needs an ON and an OFF signal to register a keypress. This is exactly what this switch does. You can specify a delay (in ms) between those messages.
 
  - **What happens if I have no internet access on my computer?**
-   
+    
 The program won't be able to update the offsets on startup, so it will use the last cached version. I recommend trying this out for the first time with an internet connection. 
+
 - **If I'm still running Windows 7?**
   
 The offset download may fail due to the obsolete SSL/TLS settings on your system. You can easily fix those problems following [this](https://stackoverflow.com/a/70674920/8921786) guide. 
