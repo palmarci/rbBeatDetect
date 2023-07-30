@@ -82,14 +82,17 @@ namespace rbBeatDetect
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
             string version = fvi.FileVersion;
+            
             titleLabel.Text += " v" + version.Replace(".0", "");
-
             errorLabel.Text = "";
 
             string offsetText = versionManager.getOffsetText();
-            supportedOffsets = versionManager.parseOffsets(offsetText);
+            
+            if (offsetText != null) {
+                supportedOffsets = versionManager.parseOffsets(offsetText);
+            }
 
-            if (supportedOffsets == null)
+            if (supportedOffsets == null || supportedOffsets.Count > 0)
             {
                 errorLabel.Text = "Failed downloading the offsets and could not read the local backup!\r\nPlease check your internet connection!\r\n";
                 supportedVersionsHelper.Enabled = false;
