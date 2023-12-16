@@ -1,110 +1,148 @@
 [
-  {
-    "version": {
-      "mainVer": 6,
-      "subVer": 5,
-      "patchVer": 1
+    {
+        "version": {
+            "mainVer": 6,
+            "subVer": 5,
+            "patchVer": 1
+        },
+        "deckPointer": 67060904,
+        "deckOffsets": [
+            [
+                240,
+                40,
+                0
+            ],
+            [
+                248,
+                40,
+                0
+            ],
+            [
+                256,
+                40,
+                0
+            ],
+            [
+                264,
+                40,
+                0
+            ]
+        ],
+        "masterPointer": 67137200,
+        "masterOffsets": [
+            512,
+            412
+        ],
+        "endOffset": 9308
     },
-    "deckPointer": 67060904,
-    "deckOffsets": [
-      [
-        240,
-        40,
-        0
-      ],
-      [
-        248,
-        40,
-        0
-      ],
-      [
-        256,
-        40,
-        0
-      ],
-      [
-        264,
-        40,
-        0
-      ]
-    ],
-    "masterPointer": 67137200,
-    "masterOffsets": [
-      512,
-      412
-    ],
-    "endOffset": 9308
-  },
-  {
-    "version": {
-      "mainVer": 6,
-      "subVer": 6,
-      "patchVer": 4
+    {
+        "version": {
+            "mainVer": 6,
+            "subVer": 6,
+            "patchVer": 4
+        },
+        "deckPointer": 66527616,
+        "deckOffsets": [
+            [
+                240,
+                40,
+                0
+            ],
+            [
+                248,
+                40,
+                0
+            ],
+            [
+                256,
+                40,
+                0
+            ],
+            [
+                264,
+                40,
+                0
+            ]
+        ],
+        "masterPointer": 66605920,
+        "masterOffsets": [
+            48,
+            412
+        ],
+        "endOffset": 9308
     },
-    "deckPointer": 66527616,
-    "deckOffsets": [
-      [
-        240,
-        40,
-        0
-      ],
-      [
-        248,
-        40,
-        0
-      ],
-      [
-        256,
-        40,
-        0
-      ],
-      [
-        264,
-        40,
-        0
-      ]
-    ],
-    "masterPointer": 66605920,
-    "masterOffsets": [
-      48,
-      412
-    ],
-    "endOffset": 9308
-  }, {
-    "version": {
-      "mainVer": 6,
-      "subVer": 7,
-      "patchVer": 3
+    {
+        "version": {
+            "mainVer": 6,
+            "subVer": 7,
+            "patchVer": 3
+        },
+        "deckPointer": 70477616,
+        "deckOffsets": [
+            [
+                240,
+                40,
+                24
+            ],
+            [
+                248,
+                40,
+                24
+            ],
+            [
+                256,
+                40,
+                24
+            ],
+            [
+                264,
+                40,
+                24
+            ]
+        ],
+        "masterPointer": 70157680,
+        "masterOffsets": [
+            32,
+            640,
+            3560
+        ],
+        "endOffset": 9308
     },
-    "deckPointer": 70477616,
-    "deckOffsets": [
-      [
-        240,
-        40,
-        24
-      ],
-      [
-        248,
-        40,
-        24
-      ],
-      [
-        256,
-        40,
-        24
-      ],
-      [
-        264,
-        40,
-        24
-      ]
-    ],
-    "masterPointer": 70157680,
-    "masterOffsets": [
-		32,
-		640,
-		3560
-    ],
-    "endOffset": 9308
-  }
+    {
+        "version": {
+            "mainVer": 6,
+            "subVer": 6,
+            "patchVer": 11
+        },
+        "deckPointer": 69653808,
+        "deckOffsets": [
+            [
+                1872,
+                328,
+                8
+            ],
+            [
+                1872,
+                336,
+                8
+            ],
+            [
+                1880,
+                328,
+                8
+            ],
+            [
+                1880,
+                336,
+                8
+            ]
+        ],
+        "masterPointer": 69576472,
+        "masterOffsets": [
+            32,
+            640,
+            3560
+        ],
+        "endOffset": 9308
+    }
 ]
