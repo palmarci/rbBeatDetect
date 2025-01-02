@@ -34,4 +34,6 @@ The offset download may fail due to the obsolete SSL/TLS settings on your system
 
 - [Offsets.json](https://raw.githubusercontent.com/palmarci/rbBeatDetect/main/offsets.json)
 
+- [other great source of information](https://github.com/Kethsar/RekordboxReader/blob/master/Finding%20Rekordbox%20Pointers.md)
+
 (do NOT use the offsets.txt file, its for the older versions only!)
